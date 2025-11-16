@@ -64,6 +64,7 @@ const Admin = () => {
   }, [user]);
 
   const checkAdminStatus = async () => {
+    console.log("Checking admin status for user:", user!.id);
     try {
       const { data, error } = await supabase
         .from("profiles")
@@ -71,21 +72,23 @@ const Admin = () => {
         .eq("id", user!.id)
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error("Supabase Error:", error);
+        alert("Database Error: " + error.message); // Error screen par dikhega
+        throw error;
+      }
+
+      console.log("User Role Found:", data?.role); // Console me role dikhega
 
       if (data?.role === "admin") {
         setIsAdmin(true);
         fetchAdminData();
       } else {
-        toast({
-          title: "Access Denied",
-          description: "You do not have admin privileges",
-          variant: "destructive",
-        });
+        alert("Access Denied: Your role is '" + data?.role + "', but 'admin' is required.");
         navigate("/dashboard");
       }
-    } catch (error) {
-      console.error("Error checking admin status:", error);
+    } catch (error: any) {
+      console.error("Catch Error:", error);
     } finally {
       setLoading(false);
     }
