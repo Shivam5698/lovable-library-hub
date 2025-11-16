@@ -157,7 +157,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* <Header /> Uncomment if you have header */}
+       <Header />
       <main className="container py-8">
         <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
           <div>
